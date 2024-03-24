@@ -18,10 +18,10 @@ sfn = 30;
 // TK - corner rounding
 
 difference() {
-    cube([mainLength, mainWidth, commonThickness], center=true);
+    translate([(indent2Length-indent1Length)/-2, 0,0]) cube([mainLength, mainWidth, commonThickness], center=true);
     indents();
 }
-middleWasher();
+translate([0,0,(middleWasherHeight + commonThickness)/2]) middleWasher();
 
 module middleWasher() {
     difference() {
@@ -41,11 +41,13 @@ module middleWasher() {
 
 
 module indents() {
+    translate([indent1Length/2+middleWasherRadius*1.5,0,0]) indent(indent1Length);
+    translate([indent2Length/-2-middleWasherRadius*1.5, 0,0]) indent(indent2Length);
     
     
 }
 
 module indent(length) {
-    // tk corner rounding
+    // tk corner 
     cube([length, indentWidth, commonThickness*2], center=true);
 }
