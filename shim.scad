@@ -5,14 +5,15 @@ mainLength = 70;
 commonThickness = 3;
 
 wingWidth = 15;
+wingThickness = 2;
 
 indentWidth = 7;
 indent1Length = 20;
 indent2Length = 25;
 indentRadius = 1;
 
-middleWasherRadius = 6;
-middleWasherThickness = 1;
+middleWasherRadius = 5;
+middleWasherThickness = 0.75;
 middleWasherSupportsThick = 1.5;
 middleWasherHeight = 20;
 
@@ -32,7 +33,7 @@ module main() {
 
 module wing() {
     difference() {
-        cube([mainLength, wingWidth, commonThickness], center = true);
+        cube([mainLength, wingWidth, wingThickness], center = true);
         for(i = [-1,1]) {
             // these values are vibes / more art than science; clearly a more complex curve in the original CAD that's not worth mocking up
             translate([(mainLength+wingWidth*1.25)/2*i,(wingWidth/-2.7),0]) cylinder(r = wingWidth, h = commonThickness*2, $fn=sfn, center=true);
@@ -41,8 +42,8 @@ module wing() {
 }
 
 module wings() {
-    translate([commonThickness/-1.25,(mainWidth-commonThickness)/-2, commonThickness/4.5]) rotate([60, 0,0]) translate([0,(wingWidth)/-2,0]) wing();
-     translate([commonThickness/-1.25,(mainWidth-commonThickness)/2,commonThickness/4.5]) rotate([120, 0,0]) translate([0,wingWidth/-2,0]) wing();
+    translate([commonThickness/-1.25,(mainWidth-wingThickness)/-2, wingThickness/2]) rotate([60, 0,0]) translate([0,(wingWidth)/-2,0]) wing();
+     translate([commonThickness/-1.25,(mainWidth-wingThickness)/2,wingThickness/2]) rotate([120, 0,0]) translate([0,wingWidth/-2,0]) wing();
 }
 
 main();
