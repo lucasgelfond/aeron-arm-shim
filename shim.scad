@@ -17,7 +17,7 @@ middleWasherThickness = 0.75;
 middleWasherSupportsThick = 1.5;
 middleWasherHeight = 20;
 
-sfn = 30;
+sfn = 100;
 
 // TK - corner rounding
 
