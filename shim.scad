@@ -4,9 +4,12 @@ mainWidth = 20;
 mainLength = 70;
 commonThickness = 3;
 
+wingWidth = 15;
+
 indentWidth = 7;
 indent1Length = 20;
 indent2Length = 25;
+indentRadius = 1;
 
 middleWasherRadius = 6;
 middleWasherThickness = 1;
@@ -17,11 +20,33 @@ sfn = 30;
 
 // TK - corner rounding
 
-difference() {
-    translate([(indent2Length-indent1Length)/-2, 0,0]) cube([mainLength, mainWidth, commonThickness], center=true);
-    indents();
+module main() {
+     difference() {
+        translate([(indent2Length-indent1Length)/-2, 0,0]) cube([mainLength, mainWidth, commonThickness], center=true);
+        indents();
+    }
+    translate([0,0,(middleWasherHeight + commonThickness)/2]) middleWasher();
+    wings();
 }
-translate([0,0,(middleWasherHeight + commonThickness)/2]) middleWasher();
+
+
+module wing() {
+    difference() {
+        cube([mainLength, wingWidth, commonThickness], center = true);
+        for(i = [-1,1]) {
+            // these values are vibes / more art than science; clearly a more complex curve in the original CAD that's not worth mocking up
+            translate([(mainLength+wingWidth*1.25)/2*i,(wingWidth/-2.7),0]) cylinder(r = wingWidth, h = commonThickness*2, $fn=sfn, center=true);
+        }
+    }
+}
+
+module wings() {
+    translate([commonThickness/-1.25,(mainWidth-commonThickness)/-2, commonThickness/4.5]) rotate([60, 0,0]) translate([0,(wingWidth)/-2,0]) wing();
+     translate([commonThickness/-1.25,(mainWidth-commonThickness)/2,commonThickness/4.5]) rotate([120, 0,0]) translate([0,wingWidth/-2,0]) wing();
+}
+
+main();
+
 
 module middleWasher() {
     difference() {
@@ -48,6 +73,9 @@ module indents() {
 }
 
 module indent(length) {
-    // tk corner 
-    cube([length, indentWidth, commonThickness*2], center=true);
+    // still not really the picture but seems ok 
+    minkowski() {
+        cube([length, indentWidth, commonThickness*2], center=true);
+        cylinder(r = indentRadius, h=commonThickness*2, center=true, $fn = sfn);
+    }
 }
